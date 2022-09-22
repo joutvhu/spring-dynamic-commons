@@ -27,9 +27,18 @@ repositories {
 
 ext {
     versions = [
-            'spring-framework.version'   : '5.3.20',
-            'freemarker.version'         : '2.3.31',
-            'commons-lang3.version'      : '3.12.0'
+            'spring-boot.version'     : '2.7.0',
+            'spring-framework.version': '5.3.20',
+            'freemarker.version'      : '2.3.31',
+            'commons-lang3.version'   : '3.12.0'
+    ]
+    mapVersions = [
+            'org.springframework.boot:spring-boot-dependencies': 'spring-boot.version',
+            'org.springframework:spring-aspects'               : 'spring-framework.version',
+            'org.springframework:spring-context'               : 'spring-framework.version',
+            'org.springframework:spring-jcl'                   : 'spring-framework.version',
+            'org.freemarker:freemarker'                        : 'freemarker.version',
+            'org.apache.commons:commons-lang3'                 : 'commons-lang3.version',
     ]
 }
 
@@ -151,8 +160,15 @@ publishing {
                 }
                 properties = project.ext.versions
                 withXml {
-                    def dependenciesNode = asNode().appendNode('dependencies')
+                    def dependencyManagement = asNode().get('dependencyManagement')
+                    dependencyManagement.dependencies.dependency.each {
+                        def versionProperty = project.ext.mapVersions["${it.groupId.text()}:${it.artifactId.text()}"]
+                        if (versionProperty) {
+                            it.version[0].setValue("\${$versionProperty}")
+                        }
+                    }
 
+                    def dependenciesNode = asNode().appendNode('dependencies')
                     configurations.implementation.allDependencies.each {
                         def dependencyNode = dependenciesNode.appendNode('dependency')
                         dependencyNode.appendNode('groupId', it.group)
@@ -172,21 +188,21 @@ publishing {
                 url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
             }
             credentials {
-               username = project.ossrhUsername
-               password = project.ossrhPassword
+                username = project.ossrhUsername
+                password = project.ossrhPassword
             }
         }
         maven {
             name = 'github'
             url = "https://maven.pkg.github.com/joutvhu/spring-dynamic-commons"
             credentials {
-               username = project.githubUsername
-               password = project.githubPassword
+                username = project.githubUsername
+                password = project.githubPassword
             }
         }
     }
 }
 
 signing {
-   sign publishing.publications.maven
+    sign publishing.publications.maven
 }
