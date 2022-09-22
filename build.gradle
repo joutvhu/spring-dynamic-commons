@@ -1,0 +1,168 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'groovy'
+    id 'signing'
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+}
+
+group = 'com.github.joutvhu'
+version = '1.0.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework:spring-aspects:5.3.20'
+    implementation 'org.springframework:spring-context:5.3.20'
+    implementation 'org.springframework:spring-jcl:5.3.20'
+    implementation 'org.springframework:spring-context-support:5.3.20'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    implementation 'org.projectlombok:lombok:1.18.12'
+
+    implementation 'org.freemarker:freemarker:2.3.30'
+    implementation 'org.apache.commons:commons-lang3:3.11'
+
+    testImplementation(platform('org.junit:junit-bom:5.8.2'))
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+jar {
+    enabled = true
+    manifest {
+        attributes 'Built-By': 'joutvhu (Giao Ho)'
+    }
+    into("META-INF/maven/${project.group}/${project.name}") {
+        from {
+            generatePomFileForMavenPublication
+        }
+        rename {
+            it.replace('pom-default.xml', 'pom.xml')
+        }
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+task fatJar(type: Jar) {
+    manifest.from jar.manifest
+    with jar
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives fatJar, sourcesJar, javadocJar
+}
+
+test {
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching 'com.joutvhu.dynamic.commons.*'
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = project.name
+            artifacts = [fatJar, sourcesJar, javadocJar]
+            version = version
+
+            pom {
+                name = project.name
+                description = 'Easier to implement dynamic queries with JpaRepository'
+                url = 'https://github.com/joutvhu/spring-dynamic-commons'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/joutvhu/spring-dynamic-commons/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'joutvhu'
+                        name = 'Giao Ho'
+                        email = 'joutvhu@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:joutvhu/spring-dynamic-commons.git'
+                    developerConnection = 'scm:git:git@github.com:joutvhu/spring-dynamic-commons.git'
+                    url = 'https://github.com/joutvhu/spring-dynamic-commons'
+                }
+                issueManagement {
+                    system = 'Github Issue'
+                    url = 'https://github.com/joutvhu/spring-dynamic-commons/issues'
+                }
+                organization {
+                    name = 'Giao Ho'
+                    url = 'https://github.com/joutvhu'
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'sonatype'
+            if (version.endsWith('-SNAPSHOT') || version.endsWith('.SNAPSHOT')) {
+                url = 'https://oss.sonatype.org/content/repositories/snapshots'
+            } else {
+                url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            }
+            credentials {
+               username = project.ossrhUsername
+               password = project.ossrhPassword
+            }
+        }
+        maven {
+            name = 'github'
+            url = "https://maven.pkg.github.com/joutvhu/spring-dynamic-commons"
+            credentials {
+               username = project.githubUsername
+               password = project.githubPassword
+            }
+        }
+    }
+}
+
+signing {
+   sign publishing.publications.maven
+}
