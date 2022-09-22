@@ -32,26 +32,23 @@ ext {
             'freemarker.version'      : '2.3.31',
             'commons-lang3.version'   : '3.12.0'
     ]
-    mapVersions = [
-            'org.springframework.boot:spring-boot-dependencies': 'spring-boot.version',
-            'org.springframework:spring-aspects'               : 'spring-framework.version',
-            'org.springframework:spring-context'               : 'spring-framework.version',
-            'org.springframework:spring-jcl'                   : 'spring-framework.version',
-            'org.freemarker:freemarker'                        : 'freemarker.version',
-            'org.apache.commons:commons-lang3'                 : 'commons-lang3.version',
+    managedVersions = [
+            'org.springframework:spring-aspects': 'spring-framework.version',
+            'org.springframework:spring-context': 'spring-framework.version',
+            'org.springframework:spring-jcl'    : 'spring-framework.version',
+            'org.freemarker:freemarker'         : 'freemarker.version',
+            'org.apache.commons:commons-lang3'  : 'commons-lang3.version'
+    ]
+    otherVersions = [
+            'org.springframework.boot:spring-boot-dependencies': 'spring-boot.version'
     ]
 }
 
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'org.springframework', version: ext.versions['spring-framework.version']) {
-            entry 'spring-aspects'
-            entry 'spring-context'
-            entry 'spring-jcl'
+        ext.managedVersions.each {
+            dependency "${it.key}:${ext.versions[it.value]}"
         }
-
-        dependency group: 'org.freemarker', name: 'freemarker', version: ext.versions['freemarker.version']
-        dependency group: 'org.apache.commons', name: 'commons-lang3', version: ext.versions['commons-lang3.version']
     }
 }
 
@@ -162,7 +159,11 @@ publishing {
                 withXml {
                     def dependencyManagement = asNode().get('dependencyManagement')
                     dependencyManagement.dependencies.dependency.each {
-                        def versionProperty = project.ext.mapVersions["${it.groupId.text()}:${it.artifactId.text()}"]
+                        def key = "${it.groupId.text()}:${it.artifactId.text()}"
+                        def versionProperty = project.ext.managedVersions[key]
+                        if (versionProperty == null) {
+                            versionProperty = project.ext.otherVersions[key]
+                        }
                         if (versionProperty) {
                             it.version[0].setValue("\${$versionProperty}")
                         }
