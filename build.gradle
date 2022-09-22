@@ -6,7 +6,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'org.springframework.boot' version '2.7.0'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 group = 'com.github.joutvhu'
@@ -25,17 +25,39 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    versions = [
+            'spring-framework.version'   : '5.3.20',
+            'freemarker.version'         : '2.3.31',
+            'commons-lang3.version'      : '3.12.0'
+    ]
+}
+
+dependencyManagement {
+    dependencies {
+        dependencySet(group: 'org.springframework', version: ext.versions['spring-framework.version']) {
+            entry 'spring-aspects'
+            entry 'spring-context'
+            entry 'spring-context-support'
+            entry 'spring-jcl'
+        }
+
+        dependency group: 'org.freemarker', name: 'freemarker', version: ext.versions['freemarker.version']
+        dependency group: 'org.apache.commons', name: 'commons-lang3', version: ext.versions['commons-lang3.version']
+    }
+}
+
 dependencies {
-    implementation 'org.springframework:spring-aspects:5.3.20'
-    implementation 'org.springframework:spring-context:5.3.20'
-    implementation 'org.springframework:spring-jcl:5.3.20'
-    implementation 'org.springframework:spring-context-support:5.3.20'
+    implementation 'org.springframework:spring-aspects'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-jcl'
+    implementation 'org.springframework:spring-context-support'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     implementation 'org.projectlombok:lombok:1.18.12'
 
-    implementation 'org.freemarker:freemarker:2.3.30'
-    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'org.freemarker:freemarker'
+    implementation 'org.apache.commons:commons-lang3'
 
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
