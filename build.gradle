@@ -38,7 +38,6 @@ dependencyManagement {
         dependencySet(group: 'org.springframework', version: ext.versions['spring-framework.version']) {
             entry 'spring-aspects'
             entry 'spring-context'
-            entry 'spring-context-support'
             entry 'spring-jcl'
         }
 
@@ -51,7 +50,6 @@ dependencies {
     implementation 'org.springframework:spring-aspects'
     implementation 'org.springframework:spring-context'
     implementation 'org.springframework:spring-jcl'
-    implementation 'org.springframework:spring-context-support'
 
     implementation 'org.freemarker:freemarker'
     implementation 'org.apache.commons:commons-lang3'
