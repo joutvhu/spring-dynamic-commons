@@ -37,7 +37,7 @@ public class TrimDirective implements TemplateDirectiveModel {
     public static class TrimWriter extends Writer {
         private final Writer out;
         private final TrimSymbol symbols;
-        private final StringBuffer contentBuffer = new StringBuffer();
+        private final StringBuilder contentBuilder = new StringBuilder();
 
         public static TrimWriter of(Writer out, TrimSymbol symbols) {
             return new TrimWriter(out, symbols);
@@ -51,11 +51,11 @@ public class TrimDirective implements TemplateDirectiveModel {
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
             String content = String.copyValueOf(cbuf);
-            this.contentBuffer.append(content);
+            this.contentBuilder.append(content);
         }
 
         public void afterWrite() throws IOException {
-            String content = this.contentBuffer.toString();
+            String content = this.contentBuilder.toString();
 
             for (String prefix : symbols.prefixOverrides)
                 content = Pattern.compile("^[ \\t\\n]*" + escapeRegular(prefix), Pattern.CASE_INSENSITIVE)

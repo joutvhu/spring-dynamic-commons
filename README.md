@@ -1,1 +1,1 @@
-# spring-dynamic-commons
+# Spring Dynamic Commons

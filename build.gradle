@@ -33,11 +33,12 @@ ext {
             'commons-lang3.version'   : '3.12.0'
     ]
     managedVersions = [
-            'org.springframework:spring-aspects': 'spring-framework.version',
-            'org.springframework:spring-context': 'spring-framework.version',
-            'org.springframework:spring-jcl'    : 'spring-framework.version',
-            'org.freemarker:freemarker'         : 'freemarker.version',
-            'org.apache.commons:commons-lang3'  : 'commons-lang3.version'
+            'org.springframework:spring-aspects'        : 'spring-framework.version',
+            'org.springframework:spring-context'        : 'spring-framework.version',
+            'org.springframework:spring-jcl'            : 'spring-framework.version',
+            'org.springframework:spring-context-support': 'spring-framework.version',
+            'org.freemarker:freemarker'                 : 'freemarker.version',
+            'org.apache.commons:commons-lang3'          : 'commons-lang3.version'
     ]
     otherVersions = [
             'org.springframework.boot:spring-boot-dependencies': 'spring-boot.version'
@@ -65,8 +66,11 @@ dependencies {
 
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.springframework:spring-context-support'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'

@@ -25,12 +25,12 @@ import java.io.IOException;
  */
 @NoArgsConstructor
 public class DynamicQueryTemplates implements ResourceLoaderAware, InitializingBean {
+    private static final Log log = LogFactory.getLog(DynamicQueryTemplates.class);
+
     private static StringTemplateLoader sqlTemplateLoader = new StringTemplateLoader();
     private static Configuration cfg = TemplateConfiguration.instanceWithDefault()
             .templateLoader(sqlTemplateLoader)
             .configuration();
-
-    private final Log logger = LogFactory.getLog(getClass());
 
     private String encoding = "UTF-8";
     private String templateLocation = "classpath:/query";
@@ -77,7 +77,7 @@ public class DynamicQueryTemplates implements ResourceLoaderAware, InitializingB
             DynamicTemplateResolver.of(resource).encoding(encoding).load((templateName, content) -> {
                 Object src = sqlTemplateLoader.findTemplateSource(templateName);
                 if (src != null)
-                    logger.warn("Found duplicate template key, will replace the value, key: " + templateName);
+                    log.warn("Found duplicate template key, will replace the value, key: " + templateName);
                 sqlTemplateLoader.putTemplate(templateName, content);
             });
         }
