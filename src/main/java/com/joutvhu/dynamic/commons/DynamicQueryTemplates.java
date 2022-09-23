@@ -45,18 +45,36 @@ public class DynamicQueryTemplates implements ResourceLoaderAware, InitializingB
         }
     }
 
+    /**
+     * Setup encoding for the process of reading the query template files.
+     *
+     * @param encoding of query template file, default is "UTF-8"
+     */
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
+    /**
+     * Specify the location of the query template files.
+     *
+     * @param templateLocation is location of the query template files, default is "classpath:/query"
+     */
     public void setTemplateLocation(String templateLocation) {
         this.templateLocation = templateLocation;
     }
 
+    /**
+     * Specify filename extension of the query template files.
+     *
+     * @param suffix is filename extension of the query template files, default is ".dsql"
+     */
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
 
+    /**
+     * Specify {@link ResourceLoader} to load the query template files.
+     */
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
