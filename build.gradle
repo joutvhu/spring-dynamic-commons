@@ -131,7 +131,7 @@ publishing {
 
             pom {
                 name = project.name
-                description = 'Easier to implement dynamic queries with JpaRepository'
+                description = 'Spring Dynamic Commons provides SQL Directives and Utils for other Spring Dynamic libraries'
                 url = 'https://github.com/joutvhu/spring-dynamic-commons'
                 licenses {
                     license {
