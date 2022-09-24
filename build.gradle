@@ -136,7 +136,7 @@ publishing {
                 licenses {
                     license {
                         name = 'MIT License'
-                        url = 'https://github.com/joutvhu/spring-dynamic-commons/blob/master/LICENSE'
+                        url = 'https://github.com/joutvhu/spring-dynamic-commons/blob/main/LICENSE'
                     }
                 }
                 developers {
