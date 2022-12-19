@@ -1,6 +1,5 @@
 package com.joutvhu.dynamic.commons;
 
-import com.joutvhu.dynamic.commons.util.TemplateConfiguration;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

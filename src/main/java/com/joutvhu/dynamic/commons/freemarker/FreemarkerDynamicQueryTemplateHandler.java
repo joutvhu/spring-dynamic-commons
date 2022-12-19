@@ -1,11 +1,13 @@
-package com.joutvhu.dynamic.commons;
+package com.joutvhu.dynamic.commons.freemarker;
 
 import com.joutvhu.dynamic.commons.util.DynamicTemplateResolver;
-import com.joutvhu.dynamic.commons.util.TemplateConfiguration;
+import com.joutvhu.dynamic.commons.DynamicQueryTemplate;
+import com.joutvhu.dynamic.commons.DynamicQueryTemplateHandler;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,8 +16,10 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * DynamicQueryTemplates
@@ -24,11 +28,14 @@ import java.io.IOException;
  * @since 1.0.0
  */
 @NoArgsConstructor
-public class DynamicQueryTemplates implements ResourceLoaderAware, InitializingBean {
-    private static final Log log = LogFactory.getLog(DynamicQueryTemplates.class);
+public class FreemarkerDynamicQueryTemplateHandler implements
+        DynamicQueryTemplateHandler<Template>,
+        ResourceLoaderAware,
+        InitializingBean {
+    private static final Log log = LogFactory.getLog(FreemarkerDynamicQueryTemplateHandler.class);
 
     private static StringTemplateLoader sqlTemplateLoader = new StringTemplateLoader();
-    private static Configuration cfg = TemplateConfiguration.instanceWithDefault()
+    private static Configuration cfg = FreemarkerTemplateConfiguration.instanceWithDefault()
             .templateLoader(sqlTemplateLoader)
             .configuration();
 
@@ -37,12 +44,31 @@ public class DynamicQueryTemplates implements ResourceLoaderAware, InitializingB
     private String suffix = ".dsql";
     private ResourceLoader resourceLoader;
 
-    public Template findTemplate(String name) {
+    @Override
+    public DynamicQueryTemplate<Template> createTemplate(String name, String content) {
         try {
-            return cfg.getTemplate(name, encoding);
+            return new FreemarkerDynamicQueryTemplate(new Template(name, content, cfg));
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public DynamicQueryTemplate<Template> findTemplate(String name) {
+        try {
+            Template template = cfg.getTemplate(name, encoding);
+            return new FreemarkerDynamicQueryTemplate(template);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public String processTemplate(DynamicQueryTemplate<Template> template, Map<String, Object> params) {
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template.getTemplate(), params);
     }
 
     /**

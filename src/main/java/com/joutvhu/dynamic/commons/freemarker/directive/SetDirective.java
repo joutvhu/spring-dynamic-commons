@@ -1,7 +1,11 @@
-package com.joutvhu.dynamic.commons.directive;
+package com.joutvhu.dynamic.commons.freemarker.directive;
 
 import freemarker.core.Environment;
-import freemarker.template.*;
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
 
 import java.io.IOException;
 import java.util.Map;

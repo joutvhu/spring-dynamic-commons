@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'com.github.joutvhu'
-version = '1.0.0'
+version = '2.0.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -57,6 +57,7 @@ dependencies {
     implementation 'org.springframework:spring-aspects'
     implementation 'org.springframework:spring-context'
     implementation 'org.springframework:spring-jcl'
+    implementation 'org.springframework:spring-context-support'
 
     implementation 'org.freemarker:freemarker'
     implementation 'org.apache.commons:commons-lang3'

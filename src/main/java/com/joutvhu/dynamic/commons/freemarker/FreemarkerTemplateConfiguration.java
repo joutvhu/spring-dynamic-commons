@@ -1,8 +1,8 @@
-package com.joutvhu.dynamic.commons.util;
+package com.joutvhu.dynamic.commons.freemarker;
 
-import com.joutvhu.dynamic.commons.directive.SetDirective;
-import com.joutvhu.dynamic.commons.directive.TrimDirective;
-import com.joutvhu.dynamic.commons.directive.WhereDirective;
+import com.joutvhu.dynamic.commons.freemarker.directive.SetDirective;
+import com.joutvhu.dynamic.commons.freemarker.directive.TrimDirective;
+import com.joutvhu.dynamic.commons.freemarker.directive.WhereDirective;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 
@@ -12,22 +12,22 @@ import freemarker.template.Configuration;
  * @author Giao Ho
  * @since 1.0.0
  */
-public class TemplateConfiguration {
+public class FreemarkerTemplateConfiguration {
     private Configuration cfg;
 
-    protected TemplateConfiguration() {
+    protected FreemarkerTemplateConfiguration() {
         this.cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
     }
 
-    public static TemplateConfiguration instance() {
-        return new TemplateConfiguration();
+    public static FreemarkerTemplateConfiguration instance() {
+        return new FreemarkerTemplateConfiguration();
     }
 
-    public static TemplateConfiguration instanceWithDefault() {
+    public static FreemarkerTemplateConfiguration instanceWithDefault() {
         return instance().applyDefault();
     }
 
-    public TemplateConfiguration applyDefault() {
+    public FreemarkerTemplateConfiguration applyDefault() {
         cfg.setTagSyntax(Configuration.ANGLE_BRACKET_TAG_SYNTAX);
         cfg.setInterpolationSyntax(Configuration.DOLLAR_INTERPOLATION_SYNTAX);
 
@@ -38,7 +38,7 @@ public class TemplateConfiguration {
         return this;
     }
 
-    public TemplateConfiguration templateLoader(TemplateLoader templateLoader) {
+    public FreemarkerTemplateConfiguration templateLoader(TemplateLoader templateLoader) {
         cfg.setTemplateLoader(templateLoader);
         return this;
     }
