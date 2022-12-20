@@ -1,5 +1,7 @@
 package com.joutvhu.dynamic.commons;
 
-public interface DynamicQueryTemplate<T> {
-    T getTemplate();
+import java.util.Map;
+
+public interface DynamicQueryTemplate {
+    String process(Map<String, Object> params);
 }
