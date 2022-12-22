@@ -76,18 +76,22 @@ public abstract class DynamicQueryTemplateProvider implements
      */
     protected abstract void putTemplate(String name, String content);
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // Set suffix to null to disable loading of external query templates
-        if (suffix == null) return;
-
+    private String getTemplateLocationPattern() {
         String pattern = StringUtils.isNotBlank(templateLocation) ? templateLocation : "classpath:";
         if (!pattern.endsWith(suffix)) {
             if (!pattern.endsWith("/**/*"))
                 pattern += "/**/*";
             pattern += suffix;
         }
+        return pattern;
+    }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // Set suffix to null to disable loading of external query templates
+        if (suffix == null) return;
+
+        String pattern = getTemplateLocationPattern();
         PathMatchingResourcePatternResolver resourcePatternResolver =
                 new PathMatchingResourcePatternResolver(resourceLoader);
         Resource[] resources = resourcePatternResolver.getResources(pattern);
