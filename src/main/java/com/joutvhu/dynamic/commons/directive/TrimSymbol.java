@@ -1,10 +1,13 @@
 package com.joutvhu.dynamic.commons.directive;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Getter
 public class TrimSymbol {
     private String prefix;
     private List<String> prefixOverrides;
