@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'com.github.joutvhu'
-version = '1.0.0'
+version = '2.0.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -29,7 +29,6 @@ ext {
     versions = [
             'spring-boot.version'     : '2.7.0',
             'spring-framework.version': '5.3.20',
-            'freemarker.version'      : '2.3.31',
             'commons-lang3.version'   : '3.12.0'
     ]
     managedVersions = [
@@ -37,7 +36,6 @@ ext {
             'org.springframework:spring-context'        : 'spring-framework.version',
             'org.springframework:spring-jcl'            : 'spring-framework.version',
             'org.springframework:spring-context-support': 'spring-framework.version',
-            'org.freemarker:freemarker'                 : 'freemarker.version',
             'org.apache.commons:commons-lang3'          : 'commons-lang3.version'
     ]
     otherVersions = [
@@ -57,8 +55,8 @@ dependencies {
     implementation 'org.springframework:spring-aspects'
     implementation 'org.springframework:spring-context'
     implementation 'org.springframework:spring-jcl'
+    implementation 'org.springframework:spring-context-support'
 
-    implementation 'org.freemarker:freemarker'
     implementation 'org.apache.commons:commons-lang3'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'

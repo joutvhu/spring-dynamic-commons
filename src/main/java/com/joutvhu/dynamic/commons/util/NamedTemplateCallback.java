@@ -1,7 +1,7 @@
 package com.joutvhu.dynamic.commons.util;
 
 /**
- * Callback when found a query template {@link freemarker.template.Template}
+ * Callback when found a query template {@link com.joutvhu.dynamic.commons.DynamicQueryTemplate}
  *
  * @author Giao Ho
  * @since 1.0.0
