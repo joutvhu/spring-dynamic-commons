@@ -9,6 +9,7 @@ Spring Dynamic Data provides `@DynamicQuery` annotation, so you can write dynami
 Each Spring Dynamic Data library is an extension to the corresponding [Spring Data](https://spring.io/projects/spring-data) package.
 
 - [Spring Dynamic JPA](https://github.com/joutvhu/spring-dynamic-jpa)
+- [Spring Dynamic JDBC](https://github.com/joutvhu/spring-dynamic-jdbc)
 - [Spring Dynamic R2DBC](https://github.com/joutvhu/spring-dynamic-r2dbc)
 
 To use it, you need to choose a Dynamic Query Template Provider to combine with Spring Dynamic Data.
